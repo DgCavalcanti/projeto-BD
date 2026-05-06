@@ -177,9 +177,10 @@ CREATE TABLE VISITA (
     dia_visita DATE NOT NULL,
     hora_visita VARCHAR2(5) NOT NULL,
     horario_retorno VARCHAR2(5),
+    idvisita NUMBER NOT NULL,
 
     CONSTRAINT pk_visita PRIMARY KEY 
-        (cpf_visitante, cpf_prisioneiro, cpf_funcionario, dia_visita, hora_visita),
+        (cpf_visitante, cpf_prisioneiro, cpf_funcionario, idvisita),
 
     CONSTRAINT fk_visita_visitante FOREIGN KEY (cpf_visitante)
         REFERENCES VISITANTE(cpf_visitante),
@@ -190,4 +191,10 @@ CREATE TABLE VISITA (
     CONSTRAINT fk_visita_funcionario FOREIGN KEY (cpf_funcionario)
         REFERENCES FUNCIONARIO(cpf_funcionario)
 );
+
+CREATE SEQUENCE sequencia_idvisita
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
 
