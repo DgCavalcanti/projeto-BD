@@ -169,6 +169,12 @@ CREATE TABLE FUNCIONARIO_CARGO (
         REFERENCES CARGO(nome_cargo)
 );
 
+CREATE SEQUENCE sequencia_idvisita
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
 -- 13. VISITA
 CREATE TABLE VISITA (
     cpf_visitante NUMBER(11) NOT NULL,
@@ -177,7 +183,7 @@ CREATE TABLE VISITA (
     dia_visita DATE NOT NULL,
     hora_visita VARCHAR2(5) NOT NULL,
     horario_retorno VARCHAR2(5),
-    idvisita NUMBER NOT NULL,
+    idvisita NUMBER DEFAULT sequencia_idvisita.NEXTVAL NOT NULL,
 
     CONSTRAINT pk_visita PRIMARY KEY 
         (cpf_visitante, cpf_prisioneiro, cpf_funcionario, idvisita),
@@ -191,10 +197,4 @@ CREATE TABLE VISITA (
     CONSTRAINT fk_visita_funcionario FOREIGN KEY (cpf_funcionario)
         REFERENCES FUNCIONARIO(cpf_funcionario)
 );
-
-CREATE SEQUENCE sequencia_idvisita
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
 
