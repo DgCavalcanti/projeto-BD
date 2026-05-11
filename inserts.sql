@@ -204,7 +204,7 @@ INSERT INTO PRISIONEIRO (cpf_prisioneiro, nome, data_nascimento, sexo, inicio_pr
 VALUES (31313131313, 'Fernando Souza', DATE '1990-09-25', 'M', DATE '2021-08-20', 'ALTA', 101, 'A');
 
 INSERT INTO PRISIONEIRO (cpf_prisioneiro, nome, data_nascimento, sexo, inicio_prisao, periculosidade, numero_cela, letra_pavilhao)
-VALUES (12345678910, 'Roberto Carlos Alves', DATE '1978-02-11', 'M', DATE '2022-03-15', 'MEDIA', 501, 'D');
+VALUES (12345678910, 'Roberto Carlos Alves', DATE '1986-02-11', 'M', DATE '2021-04-17', 'MEDIA', 501, 'D');
 
 INSERT INTO PRISIONEIRO (cpf_prisioneiro, nome, data_nascimento, sexo, inicio_prisao, periculosidade, numero_cela, letra_pavilhao)
 VALUES (12345678911, 'Fernando Souza', DATE '1990-09-25', 'M', DATE '2024-01-10', 'ALTA', 502, 'D');
