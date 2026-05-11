@@ -30,6 +30,9 @@ INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (402, 'F
 INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (403, 'F', 'COMUM', 4);
 INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (404, 'F', 'COMUM', 8);
 INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (405, 'F', 'COMUM', 10);
+INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (501, 'D', 'COMUM', 6);
+INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (502, 'D', 'COMUM', 6);
+INSERT INTO CELA (numero_cela, letra_pavilhao, tipo, capacidade) VALUES (601, 'E', 'COMUM', 6);
 ------------------------------------------------------------
 -- 3. CARGO
 ------------------------------------------------------------
@@ -100,14 +103,14 @@ VALUES (13131313131, 'Juliana Maria', DATE '1987-07-10', 'TARDE', 12121212121);
 
 -- Cozinheiro (Responde ao Supervisor Plata)
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor) 
-VALUES (14141414141, 'Carlos Alberto', DATE '1980-11-20', 'MANHA', 8888888888);
+VALUES (14141414141, 'Carlos Alberto', DATE '1980-11-20', 'MANHA', 88888888888);
 
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor)
 VALUES (15151515151, 'Maria Fernanda', DATE '1982-04-15', 'TARDE', 22222222222);
 
 --Zelador (Responde ao Supervisor Plata)
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor)
-VALUES (16161616161, 'Jose Inácio', DATE '1970-01-10', 'MANHA', 8888888888);
+VALUES (16161616161, 'Jose Inácio', DATE '1970-01-10', 'MANHA', 88888888888);
 
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor)
 VALUES (17171717171, 'Maria do Carmo', DATE '1975-05-20', 'TARDE', 22222222222);
@@ -120,7 +123,7 @@ INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supe
 VALUES (19191919191, 'Vigilio Silva', DATE '1985-02-28', 'NOITE', 99999999999);
 
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor)
-VALUES (20202020202, 'Maria Antônia', DATE '1987-06-15', 'MANHA', 8888888888);
+VALUES (20202020203, 'Maria Antônia', DATE '1987-06-15', 'MANHA', 88888888888);
 
 INSERT INTO FUNCIONARIO (cpf_funcionario, nome, data_nascimento, turno, cpf_supervisor)
 VALUES (21212121212, 'Joao da Silva', DATE '1990-10-05', 'TARDE', 22222222222);
@@ -133,7 +136,7 @@ INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (33333333333, 'AGE
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (44444444444, 'AGENTE_PENITENCIARIO');
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (55555555555, 'MEDICO_CLINICO');
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (10101010101, 'PSICOLOGO');
-INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (20202020202, 'ASSISTENTE_SOCIAL');
+INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (20202020203, 'ASSISTENTE_SOCIAL');
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (30303030303, 'ENFERMEIRO');
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (66666666666, 'MEDICO_CLINICO');
 INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (77777777777, 'MEDICO_CLINICO');
@@ -154,16 +157,16 @@ INSERT INTO FUNCIONARIO_CARGO (cpf_funcionario, cargo) VALUES (21212121212, 'VIG
 ------------------------------------------------------------
 -- 6. CRIME
 ------------------------------------------------------------
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART121', 'Homicidio Simples', 6, 20);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART155', 'Furto', 1, 4);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART157', 'Roubo Subtração com Ameaça', 4, 10);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART33', 'Trafico de Drogas', 5, 15);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART171', 'Estelionato', 1, 5);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART288', 'Associacao Criminosa', 1, 3);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART213', 'Estupro', 6, 10);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART33', 'Associacao ao Trafico de Drogas', 3, 8);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART121', 'Homicidio Qualificado', 12, 30);
-INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART155', 'Abandono de Incapazes', 3, 6);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART121-1', 'Homicidio Simples', 6, 20);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART155-1', 'Furto', 1, 4);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART157-1', 'Roubo Subtração com Ameaça', 4, 10);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART33-1', 'Trafico de Drogas', 5, 15);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART171-1', 'Estelionato', 1, 5);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART288-1', 'Associacao Criminosa', 1, 3);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART213-1', 'Estupro', 6, 10);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART33-2', 'Associacao ao Trafico de Drogas', 3, 8);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART121-2', 'Homicidio Qualificado', 12, 30);
+INSERT INTO CRIME (artigo_lei, descricao_crime, pena_minima, pena_maxima) VALUES ('ART155-2', 'Abandono de Incapazes', 3, 6);
 ------------------------------------------------------------
 -- 7. PRISIONEIRO
 ------------------------------------------------------------
@@ -237,46 +240,46 @@ VALUES (29292929292, DATE '2024-11-10', NULL, '18:00');
 -- 9. PROCESSO_PENAL
 ------------------------------------------------------------
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10001, 23232323232, 'ART121', DATE '2022-11-10', 'Culpado em tribunal do juri', 18);
+VALUES (10001, 23232323232, 'ART121-1', DATE '2022-11-10', 'Culpado em tribunal do juri', 18);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10002, 24242424242, 'ART157', DATE '2019-05-15', 'Condenado por roubo a mao armada', 8);
+VALUES (10002, 24242424242, 'ART157-1', DATE '2019-05-15', 'Condenado por roubo a mao armada', 8);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10003, 25252525252, 'ART155', DATE '2024-02-01', 'Furto qualificado, reu primario', 2);
+VALUES (10003, 25252525252, 'ART155-1', DATE '2024-02-01', 'Furto qualificado, reu primario', 2);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10004, 26262626262, 'ART33', DATE '2021-08-20', 'Condenada por associacao ao trafico', 10);
+VALUES (10004, 26262626262, 'ART33-2', DATE '2021-08-20', 'Condenada por associacao ao trafico', 10);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10005, 12131415161, 'ART171', DATE '2021-12-01', 'Condenado por fraudes bancarias', 4);
+VALUES (10005, 12131415161, 'ART171-1', DATE '2021-12-01', 'Condenado por fraudes bancarias', 4);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10006, 17181920212, 'ART213', DATE '2023-11-15', 'Condenacao em regime fechado', 9);
+VALUES (10006, 17181920212, 'ART213-1', DATE '2023-11-15', 'Condenacao em regime fechado', 9);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10006, 17181920212, 'ART288', DATE '2023-11-15', 'Agravante por associacao criminosa', 2);
+VALUES (10006, 17181920212, 'ART288-1', DATE '2023-11-15', 'Agravante por associacao criminosa', 2);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado) 
-VALUES (10007, 22232425262, 'ART288', DATE '2019-10-10', 'Participacao em quadrilha', 3);
+VALUES (10007, 22232425262, 'ART288-1', DATE '2019-10-10', 'Participacao em quadrilha', 3);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10008, 27272727272, 'ART155', DATE '2024-11-10', 'Homicidio qualificado, reu primario', 12);
+VALUES (10008, 27272727272, 'ART121-2', DATE '2024-11-10', 'Homicidio qualificado, reu primario', 12);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10009, 28282828282, 'ART33', DATE '2019-05-15', 'Condenacao por trafico de drogas', 8);
+VALUES (10009, 28282828282, 'ART33-1', DATE '2019-05-15', 'Condenacao por trafico de drogas', 8);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10010, 29292929292, 'ART171', DATE '2024-11-10', 'Condenacao por estelionato', 3);
+VALUES (10010, 29292929292, 'ART171-1', DATE '2024-11-10', 'Condenacao por estelionato', 3);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10011, 31313131313, 'ART121', DATE '2021-08-20', 'Homicidio simples, reu primario', 6);
+VALUES (10011, 31313131313, 'ART121-1', DATE '2021-08-20', 'Homicidio simples, reu primario', 6);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10012, 12345678910, 'ART171', DATE '2022-03-15', 'Condenacao por estelionato', 4);
+VALUES (10012, 12345678910, 'ART171-1', DATE '2022-03-15', 'Condenacao por estelionato', 4);
 
 INSERT INTO PROCESSO_PENAL (numero_processo, cpf_prisioneiro, artigo_lei, data_registro, sentenca, tempo_sentenciado)
-VALUES (10013, 12345678911, 'ART213', DATE '2024-01-10', 'Condenacao por estupro', 10);
+VALUES (10013, 12345678911, 'ART213-1', DATE '2024-01-10', 'Condenacao por estupro', 10);
 
 ------------------------------------------------------------
 -- 10. VISITANTE
@@ -316,15 +319,15 @@ INSERT INTO TELEFONE_VISITANTE (cpf_visitante, telefone) VALUES (76543210933, '7
 ------------------------------------------------------------
 -- Ana visitando Marcos, acompanhada pelo agente Felipe
 INSERT INTO VISITA (cpf_visitante, cpf_prisioneiro, cpf_funcionario, dia_visita, hora_visita, horario_retorno) 
-VALUES (12121212121, 66666666666, 33333333333, DATE '2024-05-12', '14:00', '16:00');
+VALUES (12121212121, 23232323232, 33333333333, DATE '2024-05-12', '14:00', '16:00');
 
 -- Jose visitando João, acompanhada pela agente Juliana
 INSERT INTO VISITA (cpf_visitante, cpf_prisioneiro, cpf_funcionario, dia_visita, hora_visita, horario_retorno) 
-VALUES (34343434343, 77777777777, 44444444444, DATE '2024-05-15', '09:00', '11:30');
+VALUES (34343434343, 24242424242, 44444444444, DATE '2024-05-15', '09:00', '11:30');
 
 -- Marta visitando Pedro, acompanhada pela agente Juliana
 INSERT INTO VISITA (cpf_visitante, cpf_prisioneiro, cpf_funcionario, dia_visita, hora_visita, horario_retorno) 
-VALUES (56565656565, 88888888888, 44444444444, DATE '2024-05-20', '10:00', '12:00');
+VALUES (56565656565, 25252525252, 44444444444, DATE '2024-05-20', '10:00', '12:00');
 
 -- Visita em cela acompanhada pelo agente Felipe 
 INSERT INTO VISITA (cpf_visitante, cpf_prisioneiro, cpf_funcionario, dia_visita, hora_visita, horario_retorno) 
