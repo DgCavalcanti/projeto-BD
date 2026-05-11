@@ -6,7 +6,7 @@ CREATE INDEX idx_prisioneiro_peric ON PRISIONEIRO(periculosidade);
 
 -- SQL 3. INSERT INTO
 INSERT INTO VISITANTE (cpf_visitante, nome, rua, cidade, estado, numero)
-VALUES (90909090909, 'Visitante Temporario', 'Rua Teste', 'Recife', 'PE', 10);
+VALUES (90909090909, 'Jeremias Carvalho', 'Rua 1', 'Recife', 'PE', 10);
 
 -- SQL 4. UPDATE
 UPDATE VISITANTE
@@ -158,6 +158,19 @@ SELECT *
 FROM vw_prisioneiro_cela
 ORDER BY letra_pavilhao, numero_cela, nome;
 
--- SQL 26. GRANT / REVOKE (não executar no Oracle Live SQL)
--- GRANT SELECT ON PRISIONEIRO TO outro_usuario;
--- REVOKE SELECT ON PRISIONEIRO FROM outro_usuario;
+-- Outras Consultas --
+-- Descobir o tempo que um prisioneiro homem vai ficar preso e relacionar com o crime que ele cometeu, ordenando pelo tempo de prisão --
+SELECT p.nome, pp.tempo_sentenciado, c.artigo_lei, c.descricao_crime
+FROM PRISIONEIRO p
+JOIN PROCESSO_PENAL pp ON p.cpf_prisioneiro = pp.cpf_prisioneiro
+JOIN CRIME c ON pp.artigo_lei = c.artigo_lei
+WHERE p.sexo = 'M'
+ORDER BY pp.tempo_sentenciado ASC;
+
+-- Descobrir qual funcionário supervisiona mais pessoas--
+SELECT f.nome, f.cpf_funcionario, COUNT(*) as total_supervisionados
+FROM FUNCIONARIO f
+JOIN FUNCIONARIO s ON f.cpf_funcionario = s.cpf_supervisor
+GROUP BY f.cpf_funcionario,f.nome
+ORDER BY total_supervisionados DESC
+FETCH FIRST 1 ROW ONLY;
