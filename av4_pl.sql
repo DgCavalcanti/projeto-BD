@@ -170,40 +170,47 @@ END;
 -- PL 15. EXCEPTION WHEN
 -- PL 16. USO DE PARÂMETROS (IN e OUT)
 DECLARE
+    -- Define um RECORD para armazenar dados resumidos de um prisioneiro
     TYPE t_prisioneiro_record IS RECORD (
         cpf            PRISIONEIRO.cpf_prisioneiro%TYPE,
         nome           PRISIONEIRO.nome%TYPE,
         periculosidade PRISIONEIRO.periculosidade%TYPE
     );
 
+    -- Define uma TABLE (coleção) de records de prisioneiros
     TYPE t_prisioneiro_table IS TABLE OF t_prisioneiro_record INDEX BY PLS_INTEGER;
 
     v_lista             t_prisioneiro_table;
-    v_prisioneiro       PRISIONEIRO%ROWTYPE;
-    v_nome              PRISIONEIRO.nome%TYPE;
-    v_total_processos   NUMBER;
-    v_linhas            NUMBER;
-    v_indice            PLS_INTEGER := 1;
-    v_contador          PLS_INTEGER := 1;
-    v_status            VARCHAR2(30);
-    v_total_pav         NUMBER;
-    v_capacidade_pav    NUMBER;
+    v_prisioneiro       PRISIONEIRO%ROWTYPE;   
+    v_nome              PRISIONEIRO.nome%TYPE; 
+    v_total_processos   NUMBER;               
+    v_linhas            NUMBER;              
+    v_indice            PLS_INTEGER := 1;     
+    v_contador          PLS_INTEGER := 1;    
+    v_status            VARCHAR2(30);          
+    v_total_pav         NUMBER;               
+    v_capacidade_pav    NUMBER;                
 
+    -- Cursor que busca todos os prisioneiros ordenados por nome
     CURSOR c_prisioneiros IS
         SELECT cpf_prisioneiro, nome, periculosidade
         FROM PRISIONEIRO
         ORDER BY nome;
 
-    v_cursor c_prisioneiros%ROWTYPE;
+    v_cursor c_prisioneiros%ROWTYPE; -- Variável para receber cada linha do cursor
 BEGIN
+    -- SELECT INTO: busca todos os dados do prisioneiro de CPF fixo
     SELECT *
     INTO v_prisioneiro
     FROM PRISIONEIRO
     WHERE cpf_prisioneiro = 23232323232;
 
     v_nome := v_prisioneiro.nome;
+
+    -- Chama a function para contar quantos processos esse prisioneiro tem
     v_total_processos := fn_qtd_processos_prisioneiro(v_prisioneiro.cpf_prisioneiro);
 
+    -- IF/ELSIF: classifica o status processual com base na quantidade de processos
     IF v_total_processos = 0 THEN
         v_status := 'SEM PROCESSO';
     ELSIF v_total_processos = 1 THEN
@@ -212,6 +219,7 @@ BEGIN
         v_status := 'MAIS DE UM PROCESSO';
     END IF;
 
+    -- CASE WHEN: exibe a periculosidade do prisioneiro em formato legível
     CASE
         WHEN v_prisioneiro.periculosidade = 'ALTA' THEN
             DBMS_OUTPUT.PUT_LINE(v_nome || ' possui periculosidade alta.');
@@ -225,18 +233,21 @@ BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Status processual: ' || v_status);
 
+    -- CURSOR: abre, busca e fecha manualmente os primeiros 5 prisioneiros
     OPEN c_prisioneiros;
     LOOP
         FETCH c_prisioneiros INTO v_cursor;
-        EXIT WHEN c_prisioneiros%NOTFOUND OR v_indice > 5;
+        EXIT WHEN c_prisioneiros%NOTFOUND OR v_indice > 5; -- Para ao achar 5 ou acabar os dados
 
-        v_lista(v_indice).cpf := v_cursor.cpf_prisioneiro;
-        v_lista(v_indice).nome := v_cursor.nome;
+        -- Preenche a coleção com os dados de cada prisioneiro
+        v_lista(v_indice).cpf            := v_cursor.cpf_prisioneiro;
+        v_lista(v_indice).nome           := v_cursor.nome;
         v_lista(v_indice).periculosidade := v_cursor.periculosidade;
         v_indice := v_indice + 1;
     END LOOP;
     CLOSE c_prisioneiros;
 
+    -- LOOP simples: percorre a coleção e exibe o nome de cada prisioneiro
     v_indice := v_lista.FIRST;
     LOOP
         EXIT WHEN v_indice IS NULL;
@@ -244,11 +255,13 @@ BEGIN
         v_indice := v_lista.NEXT(v_indice);
     END LOOP;
 
+    -- WHILE LOOP: percorre a coleção pelo contador e exibe a posição de cada elemento
     WHILE v_contador <= v_lista.COUNT LOOP
         DBMS_OUTPUT.PUT_LINE('WHILE: posicao ' || v_contador);
         v_contador := v_contador + 1;
     END LOOP;
 
+    -- FOR IN LOOP: agrupa prisioneiros por pavilhão e exibe o total de cada um
     FOR r IN (
         SELECT letra_pavilhao, COUNT(*) AS total
         FROM PRISIONEIRO
@@ -258,16 +271,22 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('FOR: pavilhao ' || r.letra_pavilhao || ' tem ' || r.total || ' prisioneiro(s).');
     END LOOP;
 
+    -- Chama a procedure do package para obter total e capacidade do pavilhão A (parâmetros OUT)
     pkg_relatorio_prisional_av4.resumo_pavilhao('A', v_total_pav, v_capacidade_pav);
     DBMS_OUTPUT.PUT_LINE('Package OUT: pavilhao A total=' || v_total_pav || ', capacidade=' || v_capacidade_pav);
+
+    -- Chama a function do package para classificar a lotação do pavilhão A
     DBMS_OUTPUT.PUT_LINE('Package FUNCTION: ' || pkg_relatorio_prisional_av4.classificacao_lotacao('A'));
 
+    -- Chama a procedure de reajuste com percentual 0 apenas para testar o parâmetro OUT de linhas afetadas
     pr_reajustar_salario_cargo('ZELADOR', 0, v_linhas);
     DBMS_OUTPUT.PUT_LINE('Procedure OUT: linhas afetadas=' || v_linhas);
 
 EXCEPTION
+    -- Captura caso o CPF do prisioneiro não exista na tabela
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('Nenhum prisioneiro encontrado para o CPF informado.');
+    -- Captura qualquer outro erro inesperado
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro no bloco anonimo: ' || SQLERRM);
 END;
