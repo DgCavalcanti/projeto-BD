@@ -1,6 +1,4 @@
--- PL 4. CREATE PROCEDURE
--- PL 6. %TYPE
--- PL 16. USO DE PARÂMETROS (IN e OUT)
+-- Procedimento para reajustar o salário de um cargo com base em um percentual fornecido
 CREATE OR REPLACE PROCEDURE pr_reajustar_salario_cargo (
     p_cargo            IN  CARGO.nome_cargo%TYPE,
     p_percentual       IN  NUMBER,
@@ -15,10 +13,7 @@ BEGIN
 END;
 /
 
--- PL 5. CREATE FUNCTION
--- PL 6. %TYPE
--- PL 13. SELECT ... INTO
--- PL 15. EXCEPTION WHEN
+-- Funcão para contar a quantidade de processos penais associados a um prisioneiro específico
 CREATE OR REPLACE FUNCTION fn_qtd_processos_prisioneiro (
     p_cpf IN PRISIONEIRO.cpf_prisioneiro%TYPE
 ) RETURN NUMBER IS
@@ -35,12 +30,9 @@ EXCEPTION
         RETURN -1;
 END;
 /
-
--- PL 17. CREATE OR REPLACE PACKAGE
--- PL 1. USO DE RECORD
--- PL 2. USO DE ESTRUTURA DE DADOS DO TIPO TABLE
--- PL 6. %TYPE
+-- Pacote para gerar relatórios incluindo resumo de pavilhão e classificação de lotação
 CREATE OR REPLACE PACKAGE pkg_relatorio_prisional_av4 AS
+    -- Definição de um tipo de registro para armazenar informações resumidas de um pavilhão
     TYPE t_resumo_pavilhao IS RECORD (
         letra              PAVILHAO.letra_pavilhao%TYPE,
         total_prisioneiros NUMBER,
@@ -49,30 +41,29 @@ CREATE OR REPLACE PACKAGE pkg_relatorio_prisional_av4 AS
     );
 
     TYPE t_tabela_resumo IS TABLE OF t_resumo_pavilhao INDEX BY PLS_INTEGER;
-
+    -- Resumo de um pavilhão específico
     PROCEDURE resumo_pavilhao (
         p_letra              IN  PAVILHAO.letra_pavilhao%TYPE,
         p_total_prisioneiros OUT NUMBER,
         p_capacidade_total   OUT NUMBER
     );
-
+    -- Classificação da lotação de um pavilhão com base no percentual de ocupação
     FUNCTION classificacao_lotacao (
         p_letra IN PAVILHAO.letra_pavilhao%TYPE
     ) RETURN VARCHAR2;
 END pkg_relatorio_prisional_av4;
 /
 
--- PL 18. CREATE OR REPLACE PACKAGE BODY
--- PL 8. IF ELSIF
--- PL 9. CASE WHEN
--- PL 13. SELECT ... INTO
+-- Alterando o PACKAGE anterior para incluir a implementação dos procedimentos e funções declarados
 CREATE OR REPLACE PACKAGE BODY pkg_relatorio_prisional_av4 AS
+    -- Calcula o total de prisioneiros e a capacidade total de um pavilhão específico
     PROCEDURE resumo_pavilhao (
         p_letra              IN  PAVILHAO.letra_pavilhao%TYPE,
         p_total_prisioneiros OUT NUMBER,
         p_capacidade_total   OUT NUMBER
     ) AS
     BEGIN
+        -- SELECT INTO para obter o total de prisioneiros e a capacidade total do pavilhão 
         SELECT
             (SELECT COUNT(*)
              FROM PRISIONEIRO
@@ -83,7 +74,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_relatorio_prisional_av4 AS
         INTO p_total_prisioneiros, p_capacidade_total
         FROM DUAL;
     END resumo_pavilhao;
-
+    -- Classifica a lotação de um pavilhão com base no percentual de ocupação
     FUNCTION classificacao_lotacao (
         p_letra IN PAVILHAO.letra_pavilhao%TYPE
     ) RETURN VARCHAR2 AS
@@ -93,6 +84,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_relatorio_prisional_av4 AS
     BEGIN
         resumo_pavilhao(p_letra, v_total, v_capacidade);
 
+        -- If e Else para casos de capacidade zero ou total zero, evitando divisão por zero
         IF v_capacidade = 0 THEN
             RETURN 'SEM CELAS';
         ELSIF v_total = 0 THEN
@@ -101,6 +93,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_relatorio_prisional_av4 AS
             v_percentual := v_total / v_capacidade;
         END IF;
 
+        -- CASE para classificar a lotação com base no percentual calculado
         CASE
             WHEN v_percentual < 0.50 THEN
                 RETURN 'BAIXA LOTACAO';
@@ -113,7 +106,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_relatorio_prisional_av4 AS
 END pkg_relatorio_prisional_av4;
 /
 
--- PL 19. CREATE OR REPLACE TRIGGER (COMANDO)
+-- Trigger(comando) para monitorar operações na tabela VISITA e exibir informações relevantes
 CREATE OR REPLACE TRIGGER trg_visita_comando_av4
 AFTER INSERT OR UPDATE OR DELETE ON VISITA
 DECLARE
@@ -143,12 +136,11 @@ BEGIN
 END;
 /
 
--- PL 20. CREATE OR REPLACE TRIGGER (LINHA)
+-- Trigger(linha) que impede rebaixamento direto de ALTA para BAIXA
 CREATE OR REPLACE TRIGGER trg_prisioneiro_linha_av4
 BEFORE UPDATE OF periculosidade ON PRISIONEIRO
 FOR EACH ROW
 BEGIN
-    -- Impede rebaixamento direto de ALTA para BAIXA
     IF :OLD.periculosidade = 'ALTA' AND :NEW.periculosidade = 'BAIXA' THEN
         RAISE_APPLICATION_ERROR(-20002,
             'Rebaixamento invalido: periculosidade ALTA nao pode ir direto para BAIXA. Passe por MEDIA primeiro.');
@@ -156,29 +148,16 @@ BEGIN
 END;
 /
 
--- PL 3. BLOCO ANÔNIMO
--- PL 1. USO DE RECORD
--- PL 2. USO DE ESTRUTURA DE DADOS DO TIPO TABLE
--- PL 6. %TYPE
--- PL 7. %ROWTYPE
--- PL 8. IF ELSIF
--- PL 9. CASE WHEN
--- PL 10. LOOP EXIT WHEN
--- PL 11. WHILE LOOP
--- PL 12. FOR IN LOOP
--- PL 13. SELECT ... INTO
--- PL 14. CURSOR (OPEN, FETCH e CLOSE)
--- PL 15. EXCEPTION WHEN
--- PL 16. USO DE PARÂMETROS (IN e OUT)
+
 DECLARE
-    -- Define um RECORD para armazenar dados resumidos de um prisioneiro
+    -- RECORD para armazenar dados resumidos de um prisioneiro
     TYPE t_prisioneiro_record IS RECORD (
         cpf            PRISIONEIRO.cpf_prisioneiro%TYPE,
         nome           PRISIONEIRO.nome%TYPE,
         periculosidade PRISIONEIRO.periculosidade%TYPE
     );
 
-    -- Define uma TABLE (coleção) de records de prisioneiros
+    -- TABLE (coleção) de records de prisioneiros
     TYPE t_prisioneiro_table IS TABLE OF t_prisioneiro_record INDEX BY PLS_INTEGER;
 
     v_lista             t_prisioneiro_table;
@@ -208,10 +187,9 @@ BEGIN
 
     v_nome := v_prisioneiro.nome;
 
-    -- Chama a function para contar quantos processos esse prisioneiro tem
     v_total_processos := fn_qtd_processos_prisioneiro(v_prisioneiro.cpf_prisioneiro);
 
-    -- IF/ELSIF: classifica o status processual com base na quantidade de processos
+    -- If e Else para classificar o status processual com base na quantidade de processos
     IF v_total_processos = 0 THEN
         v_status := 'SEM PROCESSO';
     ELSIF v_total_processos = 1 THEN
@@ -220,7 +198,7 @@ BEGIN
         v_status := 'MAIS DE UM PROCESSO';
     END IF;
 
-    -- CASE WHEN: exibe a periculosidade do prisioneiro em formato legível
+    -- Exibe a periculosidade do prisioneiro e se ela não está informada
     CASE
         WHEN v_prisioneiro.periculosidade = 'ALTA' THEN
             DBMS_OUTPUT.PUT_LINE(v_nome || ' possui periculosidade alta.');
@@ -234,7 +212,7 @@ BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Status processual: ' || v_status);
 
-    -- CURSOR: abre, busca e fecha manualmente os primeiros 5 prisioneiros
+    -- Cursor que abre, busca e fecha manualmente os primeiros 5 prisioneiros
     OPEN c_prisioneiros;
     LOOP
         FETCH c_prisioneiros INTO v_cursor;
@@ -248,7 +226,7 @@ BEGIN
     END LOOP;
     CLOSE c_prisioneiros;
 
-    -- LOOP simples: percorre a coleção e exibe o nome de cada prisioneiro
+    -- LOOP que percorre a coleção e exibe o nome de cada prisioneiro
     v_indice := v_lista.FIRST;
     LOOP
         EXIT WHEN v_indice IS NULL;
@@ -256,13 +234,13 @@ BEGIN
         v_indice := v_lista.NEXT(v_indice);
     END LOOP;
 
-    -- WHILE LOOP: percorre a coleção pelo contador e exibe a posição de cada elemento
+    -- WHILE que percorre a coleção pelo contador e exibe a posição de cada elemento
     WHILE v_contador <= v_lista.COUNT LOOP
         DBMS_OUTPUT.PUT_LINE('WHILE: posicao ' || v_contador);
         v_contador := v_contador + 1;
     END LOOP;
 
-    -- FOR IN LOOP: agrupa prisioneiros por pavilhão e exibe o total de cada um
+    -- FOR IN que agrupa prisioneiros por pavilhão e exibe o total de cada um
     FOR r IN (
         SELECT letra_pavilhao, COUNT(*) AS total
         FROM PRISIONEIRO
