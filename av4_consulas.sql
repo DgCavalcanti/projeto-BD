@@ -337,3 +337,20 @@ JOIN PAVILHAO pav
 SELECT *
 FROM vw_prisioneiro_cela
 ORDER BY letra_pavilhao, numero_cela, nome;
+
+
+--GRANT e REVOKE
+CREATE USER auditor_externo IDENTIFIED BY senha123;
+GRANT CREATE SESSION TO auditor_externo; 
+
+-- GRANT 
+--Concede permissão de leitura (SELECT) nas tabelas relevantes para o auditor
+GRANT SELECT ON PRISIONEIRO         TO auditor_externo;
+GRANT SELECT ON PROCESSO_PENAL      TO auditor_externo;
+GRANT SELECT ON CRIME               TO auditor_externo;
+GRANT SELECT ON VISITA              TO auditor_externo;
+GRANT SELECT ON LOG_ALTERACAO_PRISIONEIRO TO auditor_externo;
+GRANT SELECT ON vw_prisioneiro_cela TO auditor_externo;
+-- REVOKE
+--Remove a permissão de leitura (SELECT) da tabela VISITA para o auditor
+REVOKE SELECT ON VISITA FROM auditor_externo;
