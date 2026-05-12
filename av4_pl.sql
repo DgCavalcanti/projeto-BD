@@ -145,12 +145,13 @@ END;
 
 -- PL 20. CREATE OR REPLACE TRIGGER (LINHA)
 CREATE OR REPLACE TRIGGER trg_prisioneiro_linha_av4
-BEFORE INSERT OR UPDATE OF periculosidade ON PRISIONEIRO
+BEFORE UPDATE OF periculosidade ON PRISIONEIRO
 FOR EACH ROW
 BEGIN
-    IF :NEW.periculosidade IS NOT NULL
-       AND :NEW.periculosidade NOT IN ('BAIXA', 'MEDIA', 'ALTA') THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Periculosidade invalida para PRISIONEIRO.');
+    -- Impede rebaixamento direto de ALTA para BAIXA
+    IF :OLD.periculosidade = 'ALTA' AND :NEW.periculosidade = 'BAIXA' THEN
+        RAISE_APPLICATION_ERROR(-20002,
+            'Rebaixamento invalido: periculosidade ALTA nao pode ir direto para BAIXA. Passe por MEDIA primeiro.');
     END IF;
 END;
 /
