@@ -116,8 +116,30 @@ END pkg_relatorio_prisional_av4;
 -- PL 19. CREATE OR REPLACE TRIGGER (COMANDO)
 CREATE OR REPLACE TRIGGER trg_visita_comando_av4
 AFTER INSERT OR UPDATE OR DELETE ON VISITA
+DECLARE
+    v_total_visitas     NUMBER;
+    v_operacao          VARCHAR2(10);
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Operacao de comando executada na tabela VISITA.');
+    -- Identifica qual operação foi executada
+    IF INSERTING THEN
+        v_operacao := 'INSERT';
+    ELSIF UPDATING THEN
+        v_operacao := 'UPDATE';
+    ELSIF DELETING THEN
+        v_operacao := 'DELETE';
+    END IF;
+
+    -- Consulta o total atual de visitas na tabela
+    SELECT COUNT(*)
+    INTO v_total_visitas
+    FROM VISITA;
+
+    DBMS_OUTPUT.PUT_LINE('=========================================');
+    DBMS_OUTPUT.PUT_LINE('OPERACAO  : ' || v_operacao);
+    DBMS_OUTPUT.PUT_LINE('TABELA    : VISITA');
+    DBMS_OUTPUT.PUT_LINE('DATA/HORA : ' || TO_CHAR(SYSDATE, 'DD/MM/YYYY HH24:MI:SS'));
+    DBMS_OUTPUT.PUT_LINE('TOTAL DE VISITAS REGISTRADAS: ' || v_total_visitas);
+    DBMS_OUTPUT.PUT_LINE('=========================================');
 END;
 /
 
