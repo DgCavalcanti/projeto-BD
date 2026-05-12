@@ -233,7 +233,7 @@ WHERE salario > ANY (
 --Mudança do cargo de ENFERMEIRO, buscando uma valorização maior dele
 UPDATE CARGO
 SET salario = 5000.00
-WHERE nome_cargo = "ENFERMEIRO"
+WHERE nome_cargo = "ENFERMEIRO";
 
 -- SUBCONSULTA COM ALL
 -- Prisioneiros que têm o maior tempo sentenciado
